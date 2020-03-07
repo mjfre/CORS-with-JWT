@@ -17,11 +17,11 @@ import static com.example.demo.security.ApplicationUserRole.STUDENT;
 @Repository
 public class StudentDataAccessObject {
 
-    private final JdbcTemplate jdbcTemplate;
+
 
     @Autowired
     public StudentDataAccessObject(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
+
     }
 
 

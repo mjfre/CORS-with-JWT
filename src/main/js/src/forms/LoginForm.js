@@ -59,7 +59,7 @@ class LoginForm extends Component{
                         float:'left',
                         width:'100%'
                     }}>
-                    <h1 style={{marginBottom:'2em', fontWeight:'bold', fontFamily:'serif'}}>Survey Administrator Entrance</h1>
+                    <h1 style={{marginBottom:'2em', fontWeight:'bold', fontFamily:'serif'}}>Administrator Entrance</h1>
                     {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
                     {this.state.showSuccessMessage && <div>Login Sucessful</div>}
                     <div style = {{width:'100%'}}>
