@@ -7,9 +7,9 @@ import {
   } from "react-router-dom";
 import AdminView from './AdminView'
 import AuthenticatedRoute from './../components/login/AuthenticatedRoute';
-//import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from 'history';
 
-//const history = createBrowserHistory();
+const history = createBrowserHistory();
 
 class SurveySchedulerFrontendApp extends Component {
 
@@ -25,8 +25,8 @@ class SurveySchedulerFrontendApp extends Component {
                 backgroundImage: 'linear-gradient(45deg, #e3e3e3 33.33%, #d9d9d9 33.33%, #d9d9d9 50%, #e3e3e3 50%, #e3e3e3 83.33%, #d9d9d9 83.33%, #d9d9d9 100%)',
                 backgroundSize: '21.21px 21.21px',
             }}>
-                {/* <Router history={history}></div> */}
-                <Router>
+                
+                <Router history={history}>
                     <>
                         <Switch>
                             <Route path="/login" exact component={LoginView} />

@@ -65,8 +65,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 //we have access to authenticationManaager bc this class extends WebSecurityConfigurerAdapter
-                .addFilterBefore(new HeaderFilter(), JwtUsernameAndPasswordAuthenticationFilter.class)
-                .addFilterAfter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey), HeaderFilter.class)
+                .addFilter(new JwtUsernameAndPasswordAuthenticationFilter(authenticationManager(), jwtConfig, secretKey))
                 .addFilterAfter(new JwtTokenVerifier(secretKey, jwtConfig), JwtUsernameAndPasswordAuthenticationFilter.class)
                 //authorize requests
                 .authorizeRequests()
@@ -74,12 +73,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "index", "/css/*", "/js/*", "/login").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/login").permitAll()//allow CORS option calls
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
-
-
-//
-//                //allow access to this path to anyone with a student role
-//                .antMatchers("/api/student").hasRole(ADMIN.name())
-//                .antMatchers("/api/student").hasRole(STUDENT.name())
                 //any request
                 .anyRequest()
                 //must be authenticated

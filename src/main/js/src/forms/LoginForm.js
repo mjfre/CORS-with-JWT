@@ -1,11 +1,12 @@
-import React,{ Component } from "react" 
+import React, { Component } from "react"
 import AuthenticationService from '../service/AuthenticationService';
 import { Input, Button } from 'antd';
 import { LoginOutlined } from '@ant-design/icons';
+import {Redirect} from 'react-router-dom';
 
-const inputFieldStyle = {marginBottom: '10px', width: '20em'};
+const inputFieldStyle = { marginBottom: '10px', width: '20em' };
 
-class LoginForm extends Component{
+class LoginForm extends Component {
 
     constructor(props) {
         super(props)
@@ -27,16 +28,42 @@ class LoginForm extends Component{
         )
     }
     loginClicked() {
+        const {username, password} = this.state;
+        AuthenticationService.login(username, password)
+        .then(response => {
+            localStorage.setItem('accessToken', response.headers.get('Authorization'));
+            console.log(localStorage.getItem('accessToken'));
+           // <Redirect to= '/admin' />
+           this.props.history.push(`/admin`);
+            
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({ showSuccessMessage: false });
+            this.setState({ hasLoginFailed: true }); 
+        });
+        
+        // console.log(loggedIn)
+        // if(loggedIn){
+        //     this.props.history.push(`/admin`);
+            
+        // }
+        // else{
+        //     this.setState({ showSuccessMessage: false });
+        //     this.setState({ hasLoginFailed: true });
+        // }
 
-        AuthenticationService
-            .executeJwtAuthenticationService(this.state.username, this.state.password)
-            .then((response) => {
-                AuthenticationService.registerSuccessfulLoginForJwt(this.state.username, response.data.token)
-                this.props.history.push(`/admin`)
-            }).catch(() => {
-                this.setState({ showSuccessMessage: false })
-                this.setState({ hasLoginFailed: true })
-            })
+       
+    }
+        // AuthenticationService
+        //     .executeJwtAuthenticationService(this.state.username, this.state.password)
+        //     .then((response) => {
+        //         AuthenticationService.registerSuccessfulLoginForJwt(this.state.username, response.data.token)
+        //         this.props.history.push(`/admin`)
+        //     }).catch(() => {
+        //         this.setState({ showSuccessMessage: false })
+        //         this.setState({ hasLoginFailed: true })
+        //     })
         // AuthenticationService
         //     .executeBasicAuthenticationService(this.state.username, this.state.password)
         //     .then(() => {
@@ -47,59 +74,59 @@ class LoginForm extends Component{
         //         this.setState({ hasLoginFailed: true })
         //     })
 
-    }
+        // }
 
 
-    render(){
-        return (
-        <div className="container" 
-                    style= {{
-                        margin:'2.5em',
-                        display:'block',
-                        float:'left',
-                        width:'100%'
+        render(){
+            return (
+                <div className="container"
+                    style={{
+                        margin: '2.5em',
+                        display: 'block',
+                        float: 'left',
+                        width: '100%'
                     }}>
-                    <h1 style={{marginBottom:'2em', fontWeight:'bold', fontFamily:'serif'}}>Administrator Entrance</h1>
+                    <h1 style={{ marginBottom: '2em', fontWeight: 'bold', fontFamily: 'serif' }}>Administrator Entrance</h1>
                     {this.state.hasLoginFailed && <div className="alert alert-warning">Invalid Credentials</div>}
                     {this.state.showSuccessMessage && <div>Login Sucessful</div>}
-                    <div style = {{width:'100%'}}>
-                        <Input type="text" 
+                    <div style={{ width: '100%' }}>
+                        <Input type="text"
                             name="username"
                             placeholder="username"
-                            size = "large"
+                            size="large"
                             value={this.state.username}
-                            onChange={this.handleChange} 
-                            style = {inputFieldStyle}
+                            onChange={this.handleChange}
+                            style={inputFieldStyle}
                         />
                     </div>
-                    <div style = {{width:'100%'}}>
-                        <Input type="password" 
+                    <div style={{ width: '100%' }}>
+                        <Input type="password"
                             name="password"
                             placeholder="password"
-                            size = "large"
+                            size="large"
                             value={this.state.password}
-                            onChange={this.handleChange} 
-                            style = {inputFieldStyle}
+                            onChange={this.handleChange}
+                            style={inputFieldStyle}
                         />
                     </div>
-                    <Button 
-                        className="btn btn-success" 
+                    <Button
+                        className="btn btn-success"
                         onClick={this.loginClicked}
                         type="primary"
-                        shape="round" 
-                        icon={<LoginOutlined/>} 
+                        shape="round"
+                        icon={<LoginOutlined />}
                         size={'large'}
                         style={{
-                            marginTop:'2.5em',
-                            background:'black',
-                            borderColor:'white'
+                            marginTop: '2.5em',
+                            background: 'black',
+                            borderColor: 'white'
                         }}
                     >
-                    Login
+                        Login
                     </Button>
                 </div>
-        );
+            );
+        }
     }
-}
 
-export default LoginForm;
+    export default LoginForm;
